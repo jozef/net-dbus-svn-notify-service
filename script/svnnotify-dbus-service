@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+
+=head1 NAME
+
+xxx - desc
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+=cut
+
+
+use strict;
+use warnings;
+
+use Getopt::Long;
+use Pod::Usage;
+
+use Net::DBus::Reactor;
+use Net::DBus::SVN::Notify::Service;
+
+exit main();
+
+sub main {
+    my $help;
+    my $bus_type = 'system';
+    GetOptions(
+        'help|h'     => \$help,
+        'bus-type=s' => \$bus_type,
+    ) or pod2usage;
+    pod2usage if $help;    
+    pod2usage if (($bus_type ne 'system') and ($bus_type ne 'session'));
+    
+	Net::DBus::SVN::Notify::Service->setup(
+	    'bus_type' => $bus_type,
+	);
+	Net::DBus::Reactor->main->run();
+    
+    return 0;
+}
